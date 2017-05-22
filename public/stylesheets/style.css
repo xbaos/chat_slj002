@@ -1,0 +1,616 @@
+body{
+    padding: 50px;
+    font: 14px "Lucida Grande",Helevetica,Arail,sans-serif;
+}
+a{
+    color: #00B7FF;
+}
+#content{
+    /*width: 800px;*/
+    /*background-color: white;*/
+    background: url("../images/chat01_bg10.jpg") no-repeat;
+    background-size: 100%,100%;
+    width: 100%;
+    height: 484px;
+    border: 1px solid #a90;
+    /*height:100%;*/
+    /*margin-left: auto;*/
+    /*margin-right: auto;*/
+    /*margin-top: 40px;*/
+    /*margin-bottom: 40px;*/
+}
+/*初始卡牌选择页面样式----------------------------------------------------------------*/
+#card_in {
+    position: fixed;
+    top: 60px;
+    right: 0;
+    bottom: 100px;
+    left: 0;
+    background-color: rgba(20, 20, 20, .7);
+    text-align: center;
+    color: #fff;
+    display: block;
+    /*padding-top: 200px;*/
+}
+#card_in ul.thumb{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+#card_in ul.thumb{
+    position: relative;
+    list-style: none;
+    /*background: -webkit-gradient(radial,45 45,50,50 10,640,from(#444),to(#333))!important;*/
+    /*background: #333;*/
+}
+#card_in ul.thumb li{
+    position: absolute;
+    top:50%;
+    left: 50%;
+    padding: 6px 6px 24px 6px;
+    background: #FFF;
+    width: 150px;
+    height: 130px;
+    -moz-box-shadow: 1px 1px 6px #222;
+    -webkit-box-shadow: 1px 1px 6px #222;
+    box-shadow: 1px 1px 6px #222;
+    -webkit-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
+    z-index: 0;
+}
+#card_in ul.thumb li img{
+    width: 100%;
+    height: 100%;
+}
+#card_in ul.thumb li:nth-child(1){
+    margin-top: -130px;
+    margin-left: -130px;
+    -moz-transform: rotate(30deg);
+    transform: rotate(30deg);
+    -webkit-filter: blur(5px);
+}
+#card_in ul.thumb li:nth-child(2){
+    margin-top: -120px;
+    margin-left: -10px;
+    -moz-transform: rotate(19deg);
+    transform: rotate(19deg);
+    -webkit-filter: blur(4px);
+}
+#card_in ul.thumb li:nth-child(3){
+    margin-top: -100px;
+    margin-left: -30px;
+    -moz-transform: rotate(22deg);
+    transform: rotate(22deg);
+    -webkit-filter: blur(3px);
+}
+#card_in ul.thumb li:nth-child(4){
+    margin-top: -90px;
+    margin-left: -100px;
+    -moz-transform: rotate(50deg);
+    transform: rotate(50deg);
+    -webkit-filter: blur(2px);
+}
+#card_in ul.thumb li:nth-child(5){
+    margin-top: -20px;
+    margin-left: -50px;
+    -moz-transform: rotate(70deg);
+    transform: rotate(70deg);
+    -webkit-filter: blur(1px);
+}
+#card_in ul.thumb li:hover{
+    z-index: 10;
+    width: 440px;
+    height: 318px;
+    margin-top: -151px;
+    margin-left: -240px;
+    -moz-box-shadow: 8px 8px 24px #111;
+    -webkit-box-shadow: 8px 8px 24px #111;
+    box-shadow: 8px 8px 24px #111;
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-filter: blur(0px);
+
+}
+/*---------------------------------------------------------------------------------------*/
+#room{
+    background-color: #ddd;
+    margin-bottom: 1em;
+}
+#nick_name{
+    float: right;
+    width: 110px;
+    height: 32px;
+    background-color: #BBFFEE;
+    color: #330033;
+    font: bold 15px Arial,Helvetica,sans-serif;
+    text-align: center;
+    text-transform: uppercase;
+}
+#chat{
+    position: relative;
+    width: 690px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 30px;
+    background-color: #eee;
+    border-radius: 14px;
+}
+#messages{
+    float: left;
+    width: 550px;
+    height: 300px;
+    overflow: auto;
+    background-color: #eee;
+    margin-bottom: 1em;
+    margin-right: 10px;
+}
+/*---------------------------------楼主身份的UI激活后message框内嵌的textarea--->poster_ta样式*/
+#poster_ta{
+    display: none;
+    width: 500px;
+    height: 250px;
+    border: 1px #5bc0de dashed;
+}
+/*---------------------------------------------------------------------------------------*/
+/*-----------------楼主身份下，文件按钮出现的样式*/
+/*----------底部发送栏上面增加工具栏，增加文件按钮，并为后期扩展准备*/
+#send_tool{
+    float: right;
+    margin-right: -90px;
+}
+#file_panel{
+    display: none;
+}
+/*-----------------------------------------------------------------------------------------*/
+/*------------------回复小组成员身份下，信件出现的动画样式渲染*/
+.btn_fade{
+    width: 80px;
+    height: 40px;
+    background-color: #22aadd;
+    color: #1d1d1d;
+    /*float: left;*/
+    margin-right: 20px;
+    margin-top: 20px;
+}
+#mail{
+    display: none;
+    position: absolute;
+    margin-top: 27px;
+    margin-left: -7px;
+}
+.pic-box div{
+    /*margin-top: -80px;*/
+    float: left;
+    width: 25px;
+    height: 340px;
+    display: block;
+}
+.pic-box div.pic-box01{
+    background: url("../images/mail_left.png");
+    width: 22px;
+}
+.pic-box div.pic-box02{
+    background: url("../images/mail_body.png");
+    width: 0px;
+    transition: width 4s;
+    -webkit-transition: width 4s;
+    -moz-transition: width 4s;
+}
+.pic-box div.pic-box03{
+    background: url("../images/mail_right.png");
+}
+.pic-box:hover> div.pic-box02{
+    width: 540px;
+
+}
+#ta_message{
+    margin-top: 50px;
+    margin-left: 100px;
+    width: 400px;
+    height: 220px;
+    display: none;
+}
+/*-----------------------------------------------------------------------------------------*/
+/*--------------------------3d房间盒子9例渐变倾斜的样式，由选择回复小组按钮触发-------------------------------*/
+#show_box_3d{
+    perspective: 700px;
+    -webkit-perspective: 700px;
+    -webkit-perspective-origin: 10%;
+    /*z-index: 3;*/
+    /*top: 20px;*/
+    /*margin: auto 200px;*/
+    /*left: -200px;*/
+    position: absolute;
+    margin-top: 100px;
+    margin-left: 100px;
+    display: none;
+}
+.box{
+    width: 100px;
+    height: 100px;
+    background-color: #cad5eb;
+    padding: 10px;
+    margin-right: 40px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    float: left;
+    position: relative;
+}
+.box1{
+    /*z-index: 24;*/
+    transform: rotateY(45deg);
+    -webkit-transform: rotateY(45deg);
+    background-color: rgba(52,204,199,0.74902);
+}
+.box2{
+    /*z-index: 31;*/
+    transform: rotateY(45deg);
+    -webkit-transform: rotateY(45deg);
+    background-color: rgba(52,204,66,0.74902);
+}
+.box3{
+    /*z-index: 45;*/
+    transform: rotateY(45deg);
+    -webkit-transform: rotateY(45deg);
+    background-color: rgba(120,51,204,0.74902);
+}
+.box4{
+    /*z-index: 303;*/
+    transform: rotateY(45deg);
+    -webkit-transform: rotateY(45deg);
+    margin-top: 50px;
+    margin-left: -370px;
+    background-color: rgba(51,151,204,0.74902);
+}
+.box5{
+    /*z-index: 700;*/
+    transform: rotateY(45deg);
+    -webkit-transform: rotateY(45deg);
+    margin-top: 50px;
+    margin-left: -270px;
+    background-color: rgba(204,66,51,0.74902);
+}
+.box6{
+    /*z-index: 405;*/
+    transform: rotateY(45deg);
+    -webkit-transform: rotateY(45deg);
+    margin-top: 50px;
+    margin-left: -170px;
+    background-color: rgba(204,186,51,0.74902);
+}
+.box7{
+    /*z-index: 56;*/
+    transform: rotateY(45deg);
+    -webkit-transform: rotateY(45deg);
+    margin-top: 100px;
+    margin-left: -440px;
+    background-color: rgba(51,115,204,0.74902);
+}
+.box8{
+    /*z-index: 36;*/
+    transform: rotateY(45deg);
+    -webkit-transform: rotateY(45deg);
+    margin-top: 100px;
+    margin-left: -300px;
+    background-color: rgba(131,51,204,0.74902);
+}
+.box9{
+    /*z-index: 26;*/
+    transform: rotateY(45deg);
+    -webkit-transform: rotateY(45deg);
+    margin-top: 100px;
+    margin-left: -200px;
+    background-color: rgba(51,115,204,0.74902);
+}
+/*----------------------------------------end----------------------------------------------*/
+#room-list{
+    float: right;
+    width: 100px;
+    height: 300px;
+    overflow: auto;
+    margin-top: -13px;
+}
+#room-list div{
+    border-bottom: 1px solid #eee;
+}
+#room-list div:hover{
+    background-color: #ddd;
+}
+/*#send-massage{*/
+    /*width: 400px;*/
+    /*margin-right: 1em;*/
+    /*margin-bottom: 1em;*/
+/*}*/
+#help{
+    font: 10px "Lucida Grande",Helvetica,Arial,sans-serif;
+}
+.sendField{
+    width: 689px;
+    height: 40px;
+    padding: 4px;
+    margin-top: -20px;
+    /*margin: 100px auto;*/
+    overflow: hidden;
+    border: 1px solid #dedede #bababa #aaa #bababa;
+    box-shadow: 0 3px 3px rgba(255,255,255,0.1),0 3px 0 #bbb,0 4px 0 #aaa,0 5px 5px #444;
+    border-radius: 10px;
+    background-color: #f6f6f6;
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#f6f6f6),to(#eae8e8));
+    background-image: -webkit-linear-gradient(top,#f6f6f6,#eae8e8);
+    background-image: linear-gradient(top,#f6f6f6,#eae8e8);
+}
+.sendField #match-button{
+    width: 110px;
+    height: 34px;
+    float: left;
+}
+.sendField .send_message{
+    width: 460px;
+    height: 34px;
+    padding: 2px 1px;
+    margin-top: 2px;
+    /*float: right;*/
+    font: bold 16px "Times New Roman",Times,serif;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 1px,0 1px 0 #fff;
+    border-radius: 3px;
+}
+.btn_set{
+    background-color: #444444;
+    color: #5bc0de;
+    margin-left: -60px;
+    /*margin-bottom: -50px;*/
+    margin-top: -78px;
+    /*display: inline-block;*/
+    /*width: 70px;*/
+    /*float: right;*/
+    /*margin-left: -20px;*/
+    /*margin-left: -30px;*/
+}
+#send-button{
+    float: right;
+    /*width: 114px;*/
+    /*display: inline-block;*/
+    /*margin-right: -20px;*/
+}
+.sendField .send_message:focus{
+    outline: 0;
+    border-color: #aaa;
+    box-shadow: inset 0 1px 1px #bbb;
+}
+.sendField .send_message::-webkit-input-placeholder,
+.sendField .send_message:-moz-placeholder{
+    color: #999;
+    font-weight: normal;
+}
+.sendField > .btn{
+    /*float: right;*/
+    border: 1px solid #00748f;
+    margin-top: 2px;
+    height: 37px;
+    width: 110px;
+    padding: 0;
+    cursor: pointer;
+    font: bold 15px Arial,Helvetica,sans-serif;
+    color: #fafafa;
+    text-transform: uppercase;
+    background-color: #0483a0;
+    background-image: linear-gradient(top,#31b2c3, #0483a0);
+    border-radius: 3px;
+    text-shadow: 0 1px 0 rgba(255,255,255,0),0 1px 0 #fff;
+}
+.sendField > .btn:hover,
+.sendField > .btn:focus{
+    background-color: #31b2c3;
+    background-image: linear-gradient(top,#0483a0,#31b2c3);
+}
+.sendField > .btn:active{
+    outline: 0;
+    box-shadow: inset 0 1px 4px rgba(0,0,0,0.5);
+}
+.sendField::-moz-focus-inner{
+    border: none;
+}
+a,address,b,big,blockquote,body,center,cite,code,dd,ul,div,dt,h1,h2,h3,h4,h5,html,span,u,var{
+    padding: 0px;
+    margin: 0px;
+}
+@font-face {
+    font-family: BebasNeue-webfont;
+    src: url("../fonts/BebasNeue-webfont.ttf");
+}
+body{
+    background: url("../images/pattern.gif");
+    font-family: BebasNeue-webfont;
+}
+#top{
+    /*margin-top: 0px;*/
+    margin-bottom: 20px;
+}
+#top_line{
+    background-color: red;
+    height: 3px;
+    margin-bottom: 0px;
+    /*margin-top: 0px;*/
+}
+#nav{
+    text-align: center;
+    margin-top: 10px;
+    /*margin-top: 0px;*/
+}
+#nav ul{
+    /*display: block;*/
+    /*margin-top: -40px;*/
+}
+#nav ul li{
+    /*float: left;*/
+    margin-left: 20px;
+    height: 50px;
+    line-height: 50px;
+    display: inline-block;
+}
+#nav ul li a{
+    display: inline-block;
+    font-size: 30px;
+    width: 200px;
+    text-decoration: none;
+}
+#footer{
+    text-align: center;
+    margin-top: 0px;
+}
+#footer h2{
+    color: white;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+#footer ul li a{
+    margin: 0px 5px;
+}
+#footer ul li a:hover{
+    opacity: 0.5;
+}
+@media screen and (max-width: 1150px){
+    #nav ul li a{
+        font-size: 20px;
+        width: 150px;
+    }
+    /*#chat{*/
+        /*width: 400px;*/
+    /*}*/
+}
+.nav03 a{
+    /*padding: 10px;*/
+    /*color: #237456;*/
+    /*font-weight: 700;*/
+    text-shadow: none;
+    transition: color 1.3s;
+}
+.nav03 a::before,.nav03 a::after{
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #fff;
+    content: '';
+    opacity: 0;
+    transition: opacity 0.3s,transform 0.3s;
+    transform: translateY(-10px);
+    -webkit-transform: translateY(-10px);
+}
+.nav03 a::before{
+    top:0;
+    transform: translateY(-10px);
+    -webkit-transform: translateY(-10px);
+}
+.nav03 a::after{
+    bottom: 0;
+    transform: translateY(10px);
+    -webkit-transform: translateY(10px);
+}
+.nav03 a:hover,
+.nav03 a:focus{
+    color: #fff;
+}
+#nav ul li a.select{
+     background-color: white;
+     color: black;
+ }
+#nav ul li a:hover{
+    background-color: white;
+    color: black;
+}
+.nav03 a:hover::before,
+.nav03 a:hover::after,
+.nav03 a:focus::before,
+.nav03 a:focus::after{
+    opacity: 1;
+    transform: translateY(0px);
+    -webkit-transform: translateY(0px);
+}
+.nav_dyna a{
+    position: relative;
+    display: inline-block;
+    /*margin: 15px 25px;*/
+    outline: none;
+    color: #fff;
+    text-decoration: none;
+    letter-spacing: 1px;
+    /*font-weight: 400;*/
+    text-shadow: 0 0 1px rgba(255,255,255,0.3);
+    /*font-size: 13px;*/
+}
+.nav_dyna a:hover,.nav03 a:focus{
+    outline:none;
+}
+.nav01 a{
+    line-height: 2em;
+    /*margin: 15px;*/
+    perspective: 800px;
+    -webkit-perspective: 800px;
+    -moz-perspective: 800px;
+    /*width: 200px;*/
+}
+.nav01 a span{
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    padding: 0 6px;
+    background: #36648B;
+    transition: transform 0.4s,background 0.4s;
+    -webkit-transition: transform 0.4s,background 0.4s;
+    -moz-transition: transform 0.4s,background 0.4s;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    transform-origin: 50% 50% -100px;
+}
+.nav01 a:hover span,nav a:focus span{
+    background: #36648B;
+    transform: rotateY(-70deg);
+    -webkit-transform: rotateY(-70deg);
+}
+.nav02 a{
+    line-height: 2em;
+    perspective: 800px;
+    -webkit-perspective: 800px;
+}
+.nav02 a span{
+    position: relative;
+    display: inline-block;
+    padding: 3px 15px 0;
+    background: #8968CD;
+    box-shadow: inset 0 3px #2f4351;
+    transition: background 0.6s;
+    -webkit-transition: background 0.6s;
+    -moz-transition: background 0.6s;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    transform-origin: 50% 0;
+}
+.nav02 a span::before{
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    color: #191970;
+    content: attr(data-hover);
+    transform: rotateX(270deg);
+    -webkit-transform: rotateX(270deg);
+    transition: transform 0.6s;
+    transform-origin: 50% 0;
+    -webkit-transform-origin: 50% 0;
+    pointer-events: none;
+}
+.nav02 a:hover span,
+.nav02 a:focus span{
+    background: #8968CD;
+}
+.nav02 a:hover span::before,
+.nav02 a:focus span::before{
+    transform: rotateX(10deg);
+    -webkit-transform: rotateX(10deg);
+}
