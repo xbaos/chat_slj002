@@ -17,6 +17,8 @@ var parters_name='G0';
 var parter1='P1';
 var parter2='P2';
 var parter3='P3';
+var poster_room='';
+var parters_set=new Set();
 var User=global.mongoHandle.getModel('user');
 var Parters=global.mongoHandle.getModel('parters');
 var Shop=global.mongoHandle.getModel('shop');
@@ -36,6 +38,7 @@ exports.listen=function (server) {
         handleBreak(socket);//处理游客随机匹配又断开匹配
         handleParterMatch(socket);//处理小组成员匹配回复小组的按钮
         handleParterBreak(socket);//处理小组成员退出小组
+        handleParterEdit(socket);//处理小组成员多人协作编辑
         handlePosterMatch(socket);//处理楼主查到库中所有可用小组并返回
         // joinRoom(socket,'xbao');
         handleMessageBroadcasting(socket,nickNames);//处理用户的消息
@@ -71,8 +74,17 @@ function handleConnect(socket) {
                     if (err){
                         console.log(err);
                     }else {
-                        for (doc of docs){
-                            joinRoom(socket,doc.parters_name);
+                        let parter_rooms=[];
+                        for (let index in docs){
+                            console.log('--------------得到小组名----'+docs[index].parters_name+'-----------------------');
+                            parter_rooms.push(docs[index].parters_name);
+                            if(index==docs.length-1){
+                                joinRoom(socket,docs[index].parters_name);
+                                for(let room of parter_rooms){
+                                    console.log('-------room---------'+room+'--------------------------');
+                                }
+                                socket.emit('parter_rooms',{rooms:parter_rooms});
+                            }
                         }
                     }
                 });
@@ -205,6 +217,7 @@ function joinRoom(socket,room) {
     }
     socket.join(room);
     currentRoom[socket.id]=room;
+    console.log(nickNames[socket.id]+'----------成功加入了-----------'+room);
     socket.emit('joinResult',{room:room});//让用户知道他进入了新的房间
     socket.broadcast.to(room).emit('message',{
         text:nickNames[socket.id]+'已经加入'+room+'了哦，么么哒！！！'
@@ -295,9 +308,10 @@ function handleMessageBroadcasting(socket) {
 }
 //服务端处理用户切换房间
 function handleRoomJoining(socket) {
-    socket.on('join',function (room) {
-       socket.leave(currentRoom[socket.id]);
-       joinRoom(socket,room.newRoom,nickNames);
+    socket.on('join',function (result) {
+       // socket.leave(currentRoom[socket.id]);
+        console.log(nickNames[socket.id]+'---------要加入--------'+result.newRoom);
+        joinRoom(socket,result.newRoom);
     });
 }
 //处理用户随机匹配
@@ -416,6 +430,38 @@ function handleParterBreak(socket) {
             // });
         }
     })
+}
+function handleParterEdit(socket) {
+    socket.on('start_edit',function () {
+        socket.broadcast.to(currentRoom[socket.id]).emit('edit_lock');
+    });
+    socket.on('exit_edit',function () {
+        socket.broadcast.to(currentRoom[socket.id]).emit('edit_unlock');
+    });
+    socket.on('submit_mail',function (result) {
+        // let mail=result.mail;
+        console.log('-------------后台获得mail------------'+result.mail+'----------------');
+        socket.broadcast.to(currentRoom[socket.id]).emit('mail_from_submit',{mail:result.mail});
+    });
+    socket.on('reply_mail',function (result) {
+        if(currentRoom[socket.id]&&nickNames[socket.id]){
+            // parters_set.add(nickNames[socket.id]);
+            if(parters_set.size==0){
+                poster_room=currentRoom[socket.id];
+                parters_set.add(nickNames[socket.id]);
+            }else if(parters_set.size>0&&parters_set.size<3){
+                if(currentRoom[socket.id]==poster_room){
+                    parters_set.add(nickNames[socket.id]);
+                }
+                if(parters_set.size==3){
+                    poster_room='';
+                    parters_set.clear();
+                    // socket.broadcast.to(currentRoom[socket.id]).emit('reply_success',{mail:result.mail});
+                    io.sockets.in(currentRoom[socket.id]).emit('reply_success',{mail:result.mail});
+                }
+            }
+        }
+    });
 }
 //处理楼主点击选择小组按钮并显示出3d房间盒子后，查mongo库可用的parters_room信息，并打到3dUI上
 function handlePosterMatch(socket) {

@@ -115,20 +115,37 @@ $(document).ready(function () {
     });
     //显示可用房间列表
     socket.on('rooms', function (rooms) {
-        $('#room-list').empty();
-        for (let room in rooms) {
-            // room = room.substring(1, room.length);
-            var room_match=room.substr(0,5);
-            if (room != '') {
-                // if(!room_match=='match')
-                $('#room-list').append('<div><a href="#"><span>'+room+'</span></a></div>');
-                // $('#room-list_name').text(room);
+        if(role=='tourist'){
+            $('#room-list').empty();
+            for (let room in rooms) {
+                let room_head = room.substring(0,1);
+                console.log('----------------room头'+room_head+'-----------------');
+                if (room != ''&&room_head!='G'&&room_head!='m') {
+                    // // if(!room_match=='match')
+                    // if(role!='tourist'){
+                    //     if(room_head=='G'){
+                    //         console.log('-------日了狗了---'+room+'---------------------');
+                    //     }
+                    // }else {
+                    // if(room_head!='G'&&room_head!='m'){
+                        $('#room-list').append('<div><a href="#"><span>'+room+'</span></a></div>');
+                        // }
+                    // }
+                    // $('#room-list_name').text(room);
+                }
             }
         }
         $('#room-list div').click(function () {
             chatApp.processCommand('/join ' + $(this).text());//单击房间名可切换至该房间
             $('#send-massage').focus();
         });
+    });
+    socket.on('parter_rooms',function (result) {
+        let rooms=result.rooms;
+        for(let room of rooms){
+            console.log('-------get---room---'+room+'---------------------');
+            $('#room-list').append('<div><a href="#"><span>'+room+'</span></a></div>');
+        }
     });
     socket.on('match_success',function () {
         $('#match-button').val('断开连接');
@@ -174,6 +191,30 @@ $(document).ready(function () {
         $('#ta_message').text(result.mail);
         $('#mail').css("display","block");
     });
+//    小组成员接受到来自其他成员的编辑锁，锁住编辑区-----------------------------------------------------------------
+    socket.on('edit_lock',function () {
+        $('#ta_message').attr("readonly",true);
+    });
+    socket.on('edit_unlock',function () {
+        $('#ta_message').attr("readonly",false);
+    });
+    socket.on('mail_from_submit',function (result) {
+        let mail=result.mail;
+        console.log('--------------得到mail---------0001-------'+mail);
+        // $('#ta_message').text('');
+        $('#ta_message').val(mail);
+    });
+    socket.on('reply_success',function (result) {
+        if(role=='parter'){
+            $('#mail').css('display','none');
+            $('#messages').append('<div>回复楼主成功！！！</div>');
+        }else if(role=='poster'){
+            let mail=result.mail;
+            console.log('--------------楼主得到小组回复的mail---------0001-------'+mail);
+            $('#poster_ta').val(mail);
+        }
+    });
+//    --------------------------------------------------------------------------------------------------------
 //    监听人数更新事件
     socket.on('set_count',function (result) {
         let boy_count=result.boy_count;
@@ -185,7 +226,7 @@ $(document).ready(function () {
     setInterval(function () {
         socket.emit('rooms');
     }, 1000);
-    //对回复小组成员身份下，画布中消息的TextArea的淡入淡出效果按钮进行监听
+    //对回复小组成员身份下，画布中消息的TextArea的淡入淡出效果按钮进行监听----------------------画卷中的操作监听-------
     //            fadeIn事件
     $("#btn_fadein").click(function () {
         // tip.html("");
@@ -202,12 +243,37 @@ $(document).ready(function () {
             // tip.html("淡出成功");
         })
     });
+    //小组成员编辑事件
+    $('#btn_parter_edit').click(function () {
+        let text=$(this).val();
+        if(text=='开始编辑'){
+            $(this).val('退出编辑');
+            socket.emit('start_edit');
+        }else if(text=='退出编辑'){
+            $(this).val('开始编辑');
+            socket.emit('exit_edit');
+        }
+    });
+    //抢占锁并编辑完，提交的监听
+    $('#btn_parter_submit').click(function () {
+        let mail=$('#ta_message').val();
+        console.log('----------第一步获得mail'+mail+'-------------------------');
+        socket.emit('submit_mail',{mail:mail});
+    });
+    //小组成员回复楼主处理
+    $('#btn_parter_reply').click(function () {
+        $(this).val('回复中');
+        let mail=$('#ta_message').val();
+        console.log('----------回复时得到mail'+mail+'-------------------------');
+        socket.emit('reply_mail',{mail:mail});
+    });
+    //----------------------------------------------------------------------------画卷操作end------------------------
     // $('#send-massage').focus();
     $('#send-button').click(function () {
         if(role!='poster'){
             processUserInput(chatApp,'send_message');
         }else {
-            let mail=$('#poster_ta').text();
+            let mail=$('#poster_ta').val();
             socket.emit('poster_send_mail',{mail:mail});
         }
         // return false;

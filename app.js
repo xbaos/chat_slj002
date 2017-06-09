@@ -8,7 +8,7 @@ var mongoose=require('mongoose');
 var session=require('express-session');
 var multer=require('multer');
 var index = require('./routes/index');
-var users = require('./routes/users');
+// var users = require('./routes/users');
 global.mongoHandle=require('./database/mongo_handles');
 // global.mysql_ider=require('./database/module_ider');
 mongoose.Promise = global.Promise;
@@ -47,7 +47,7 @@ app.use('/', index);
 app.use('/register',index);
 app.use('/login',index);
 app.use('/home',index);
-app.use('/users', users);
+// app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

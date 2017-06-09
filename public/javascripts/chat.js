@@ -22,10 +22,10 @@ Chat.prototype.changeRoom=function (room) {
     });
 };
 //处理聊天命令，join加入或创建房间，nick修改昵称
-Chat.prototype.processCommand=function (command) {
-    var words=command.split(' ');
-    var command=words[0].substring(1,words[0].length).toLowerCase();
-    var message=false;
+Chat.prototype.processCommand=function (cmd) {
+    let words=cmd.split(' ');
+    let command=words[0].substring(1,words[0].length).toLowerCase();
+    let message=false;
     switch (command){
         case 'join':
             words.shift();//Array.shift()函数删除数组第一个元素，并将该元素返回，会改变数组的长度

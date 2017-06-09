@@ -165,8 +165,8 @@ a{
 /*-----------------------------------------------------------------------------------------*/
 /*------------------回复小组成员身份下，信件出现的动画样式渲染*/
 .btn_fade{
-    width: 80px;
-    height: 40px;
+    width: 77px;
+    height: 37px;
     background-color: #22aadd;
     color: #1d1d1d;
     /*float: left;*/
@@ -177,7 +177,7 @@ a{
     display: none;
     position: absolute;
     margin-top: 27px;
-    margin-left: -7px;
+    margin-left: -100px;
 }
 .pic-box div{
     /*margin-top: -80px;*/
